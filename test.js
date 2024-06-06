@@ -1,0 +1,1 @@
+console.log(Date.parse('01 Jan 1970 00:30:00 UTC+1'))

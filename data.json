@@ -1,0 +1,58 @@
+{
+    "users": [
+        {
+            "username": "aaaaa",
+            "password": "aaaaa"
+        },
+        {
+            "username": "bbbbb",
+            "password": "bbbbb"
+        }
+    ],
+    "workers": [
+        {
+            "name": "11111",
+            "owner": "aaaaa"
+        },
+        {
+            "name": "22222",
+            "owner": "bbbbb"
+        },
+        {
+            "name": "33333",
+            "owner": "aaaaa"
+        }
+    ],
+    "appointments": [
+        {
+            "ownerID": "d887417a-4691-4480-8eb1-0e65330d467b",
+            "worker": "11111",
+            "customer": {
+                    "name": "AAAAA",
+                    "tel": "1A1A1A"
+            },
+            "start": "05 Jun 2024 00:30:00 UTC+1",
+            "end": "05 Jun 2024 01:00:00 UTC+1"
+        },
+        {
+            "ownerID": "0dc30b52-cf10-45de-8620-b93af7d211b3",
+            "worker": "22222",
+            "customer": {
+                    "name": "BBBBB",
+                    "tel": "2B2B2B"
+            },
+            "start": "05 Jun 2024 00:30:00 UTC+1",
+            "end": "05 Jun 2024 01:00:00 UTC+1"
+        },
+        {
+            "ownerID": "d887417a-4691-4480-8eb1-0e65330d467b",
+            "worker": "11111",
+            "customer": {
+                    "name": "CCCCC",
+                    "tel": "3C3C3C"
+            },
+            "start": "05 Jun 2024 01:30:00 UTC+1",
+            "end": "05 Jun 2024 02:30:00 UTC+1"
+        }
+    ]
+}

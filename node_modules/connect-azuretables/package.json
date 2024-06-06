@@ -1,0 +1,40 @@
+{
+  "name": "connect-azuretables",
+  "version": "1.0.20",
+  "description": "Azure Table Storage session store for express-session",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "pretest": "node ./node_modules/jshint/bin/jshint lib index.js",
+    "test": "node ./node_modules/istanbul/lib/cli.js cover -x spec/*.js  spec/jasmine-runner.js",
+    "codecov": "cat './coverage/lcov.info' | codecov"
+  },
+  "author": "Mike Goodwin <mike.goodwin@owasp.org> (https://github.com/mike-goodwin)",
+  "contributors": [
+    "Mike Goodwin <mike.goodwin@owasp.org> (https://github.com/mike-goodwin)",
+    "Masaki Muranaka <monaka@monami-ya.jp> (https://github.com/monaka)",
+    "Graham Hunter (https://github.com/graham-sportsmgmt)"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/mike-goodwin/connect-azuretables",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mike-goodwin/connect-azuretables.git"
+  },
+  "dependencies": {
+    "azure-storage": "2.10.3",
+    "cron": "1.3.0"
+  },
+  "devDependencies": {
+    "codecov.io": "0.1.6",
+    "express-session": "1.15.6",
+    "istanbul": "0.4.5",
+    "jasmine": "2.8.0",
+    "jasmine-spec-reporter": "4.2.1",
+    "jshint": "2.9.5",
+    "mockery": "2.1.0",
+    "sinon": "4.0.1"
+  }
+}
