@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workers</title>
+</head>
+<body>
+    <h1>Workers List:</h1>
+
+    <table id="workertable"></table>
+    <script>
+        const workerList = fetch('/api/workers').then((value) => {
+            value.json().then((value) => {
+                console.log(value);
+            });
+        });
+        
+    </script>
+</body>
+</html>

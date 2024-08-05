@@ -34,8 +34,8 @@ for await (var worker of data.workers) {
     const ownerID = ownerEntity.userID;
     console.log(ownerID);
     const workerEntity = {
-        partitionKey: ID,
-        rowKey: ownerID,
+        partitionKey: ownerID,
+        rowKey: ID,
         name: worker.name,
         active: true,
         deactivationDate: null

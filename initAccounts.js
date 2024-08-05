@@ -14,17 +14,19 @@ const credential = new AzureNamedKeyCredential(storageAccount, storageAccountKey
 const Accounts = new TableClient(process.env.AZURE_TABLE_URL, 'Accounts', credential);
 const AccountsID = new TableClient(process.env.AZURE_TABLE_URL, 'AccountsID', credential);
 
-async function getEntity(TableClient, partitionKey, rowKey)
-{
+async function getEntity(TableClient, partitionKey, rowKey) {
     return await TableClient.getEntity(partitionKey, rowKey).then((value) => {
         return value;
-    }, (err) => { 
+    }, (err) => {
         return null;
     });
 };
 
+import bcrypt from 'bcrypt';
+
 import data from './data.json' assert { type: 'json'};
-import e from 'express';
+
+const saltRounds = 10;
 
 console.log(data);
 
@@ -35,11 +37,22 @@ for await (var user of data.users) {
         rowKey: user.username,
         userID: ID
     }
+    var encryptedPassword;
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            encryptedPassword = hash;
+        });
+    })
+
     await AccountsID.createEntity(IDEntity);
     const UserEntity = {
         partitionKey: ID,
         rowKey: ID,
-        password: user.password,
+        password: encryptedPassword,
+        settings: JSON.stringify({
+            "startTime": process.env.START_TIME,
+            "endTime": process.env.END_TIME
+        }),
         active: true,
         deactivationDate: null
     }

@@ -1,11 +1,716 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+
+        header {
+            height: 15vh;
+            background-color: white;
+            position: sticky;
+            top: 0%;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        body {
+            top: 15vh;
+            background-color: white;
+            overflow: auto;
+            overflow-x: auto;
+            /* Hide scrollbars */
+        }
+
+        html>body div.alltables {
+            visibility: visible;
+            display: block;
+            float: left;
+            left: none;
+            margin: auto;
+            position: absolute;
+        }
+
+        table,
+        td {
+            color: #000;
+            font: sans-serif
+        }
+
+        div.tableContainer {
+            visibility: hidden;
+            clear: both;
+            border: 1px solid #963;
+            margin: auto;
+            height: 70vh;
+            overflow: auto;
+            overflow-x: auto;
+            display: inline-block;
+            border-spacing: 0px;
+        }
+
+        div.timeContainer {
+            visibility: hidden;
+            clear: both;
+            border: 1px solid #963;
+            margin: auto;
+            height: 70vh;
+            overflow: hidden;
+            display: inline-block;
+            border-spacing: 0px;
+            width: 100px;
+        }
+
+        html>body div.tableContainer {
+            overflow-x: auto;
+            margin: auto;
+        }
+
+        html>body div.timeContainer {
+            overflow: hidden;
+            width: 100px;
+            margin: auto;
+        }
+
+        html>body div.timeContainer table.tableTime {
+            margin-left: 0px;
+            overflow: hidden;
+            display: block;
+            width: 100px;
+        }
+
+        html>body div.tableContainer table.scrollTable {
+            top: 0px;
+            overflow-x: auto;
+        }
+
+        html>body div.timeContainer table.tableTime {
+            overflow: hidden;
+            width: 100px;
+        }
+
+        thead.fixedHeader,
+        th {
+            position: sticky;
+            top: 0px;
+            z-index: 3;
+        }
+
+        html>body thead.fixedHeader tr {
+            display: block;
+            z-index: 3;
+        }
+
+        thead.fixedHeader th {
+            background: #C96;
+            border-left: 1px solid #EB8;
+            border-right: 1px solid #B74;
+            border-top: 1px solid #EB8;
+            font-weight: normal;
+            text-align: left;
+            z-index: 3;
+        }
+
+        html>body tbody.scrollContent {
+            display: block;
+            height: 100%;
+            overflow: auto;
+        }
+
+        html>body thead.fixedHeader th {
+            overflow-x: auto;
+            overflow: auto;
+            width: 200px;
+            min-width: 200px;
+            height: 40px;
+            text-align: center;
+            z-index: 3;
+        }
+
+        html>body div.tableContainer tbody.scrollContent td {
+            position: inherit;
+            border-left: 1px solid #EB8;
+            border-right: 1px solid #B74;
+            border-top: 1px solid #EB8;
+            overflow-x: auto;
+            overflow: auto;
+            width: 200px;
+            min-width: 200px;
+            z-index: 1;
+            overflow-wrap: break-word;
+            overflow: auto;
+            max-height: 150px;
+        }
+
+        html>body div.timeContainer tbody.scrollContent td {
+            border-left: 1px solid #EB8;
+            border-right: 1px solid #B74;
+            border-top: 1px solid #EB8;
+            overflow-x: auto;
+            overflow: auto;
+            width: 100px;
+            min-width: 100px;
+            z-index: 1;
+            overflow-wrap: break-word;
+            overflow: auto;
+            max-height: 150px;
+        }
+
+        td.timecell {
+            font-size: xx-large;
+            height: 150px;
+            max-height: 150px;
+            width: 100px;
+            text-align: center;
+        }
+
+        td.customerCell {
+            position: inherit;
+            height: 150px;
+            max-width: 100px;
+            overflow-wrap: break-word;
+            overflow: auto;
+            max-height: 150px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            z-index: 10;
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            margin: 0%;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            z-index: 10;
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            margin-top: 20vh;
+            border: 1px solid #888;
+            width: min(80vw, 500px);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        .delCellBtn {
+            z-index: 8;
+            position: block;
+            color: rgb(212, 22, 22);
+            right: 30px;
+            left: 100px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .delCellBtn:hover,
+        .delCellBtn:focus {
+            color: #7e0505;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .updateBtn {
+            color: white;
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .updateBtn:hover,
+        .updateBtn:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            font-size: 30px;
+            height: 50px;
+            text-align: center;
+            z-index: 10;
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            z-index: 10;
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            z-index: 10;
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .boxsizingBorder {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Index</h1>
+    <header>
+        <button type="button" id="prevdate">←</button>
+        <label for="choosedate"></label>
+        <input type="date" id="choosedate" name="choosedate" onchange="getnewappointments()">
+        <button type="button" id="nextdate">→</button>
+    </header>
+    <div id="alltables" class="alltables">
+        <div id="timeContainer" class="timeContainer">
+            <table id="tableTime" cellpadding="0" cellspacing="0" class="scrollTable">
+                <thead id="timeHeader" class="fixedHeader"></thead>
+                <tbody id="timeBody" class="scrollContent"></tbody>
+            </table>
+        </div>
+        <div id="tableContainer" class="tableContainer" onscroll="scrolltoo()">
+            <table id="table" cellpadding="0" cellspacing="0" class="scrollTable">
+                <thead id="tableheader" class="fixedHeader"></thead>
+                <tbody id="tablebody" class="scrollContent"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div id="modalcontent" class="modal-content">
+            <div id="modalheader" class="modal-header">
+                <span class="close" onclick="closemodal()">&times;</span>
+            </div>
+            <div id="modalbody" class="modal-body">
+                <br>
+                <label for="ctmname">Name: </label>
+                <input id="ctmname" type="text" name="ctmname" value="">
+                <br><br>
+                <label for="ctmtel">Tel:</label>
+                <input id="ctmtel" type="text" name="ctmtel" value="">
+                <br><br>
+                <label for="ctmnote">Note: </label>
+                <br>
+                <textarea id="ctmnote" name="ctmnote" rows="5" cols="30"></textarea>
+                <br><br>
+                <label for="ctmlen">Length: </label>
+                <select id="ctmlen" name="ctmlen">
+                    <option value="30">30 minutes</option>
+                    <option value="60">60 minutes</option>
+                    <option value="90">90 minutes</option>
+                    <option value="120">120 minutes</option>
+                </select>
+            </div>
+            <div id="modalfooter" class="modal-footer" style="min-height: 25px;">
+                <span id="updateApt" onclick="updateApt()" class="updateBtn"
+                    style="float: right; display: block; max-height: 20;">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="delmodal" class="modal">
+        <div id="delmodalcontent" class="modal-content">
+            <div id="delmodalheader" class="modal-header">
+                <span class="close" onclick="closemodal()">&times;</span>
+            </div>
+            <div id="delmodalbody" class="modal-body">
+                
+            </div>
+            <div id="delmodalfooter" class="modal-footer" style="min-height: 25px;">
+                <span id="updateApt" onclick="deleteCell()" class="updateBtn"
+                    style="float: right; display: block; max-height: 20;">Yes</span>
+                <span id="updateApt" onclick="closemodal()" class="updateBtn"
+                    style="float: right; display: block; max-height: 20;">No</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const table = document.getElementById('tableContainer');
+        const timeContainer = document.getElementById('timeContainer');
+
+        function scrolltoo() {
+            timeContainer.scrollTop = table.scrollTop;
+        }
+
+        function scrolltoo2() {
+            table.scrollTop = timeContainer.scrollTop;
+        }
+
+        document.getElementById("prevdate").addEventListener("click", async () => {
+            var currentDate = document.getElementById('choosedate').value;
+            var newDate = new Date(currentDate);
+            newDate.setDate(newDate.getDate() - 1);
+            document.getElementById('choosedate').value = newDate.toISOString().toString().substring(0, 10);
+            await getnewappointments();
+        });
+
+        console.log(document.getElementById("choosedate").value);
+        if (document.getElementById("choosedate").value == "") {
+            document.getElementById("choosedate").valueAsDate = new Date();
+            getnewappointments();
+        }
+
+        document.getElementById("nextdate").addEventListener("click", async () => {
+            var currentDate = document.getElementById('choosedate').value;
+            var newDate = new Date(currentDate);
+            newDate.setDate(newDate.getDate() + 1);
+            document.getElementById('choosedate').value = newDate.toISOString().toString().substring(0, 10);
+            await getnewappointments();
+        });
+
+        async function getnewappointments() {
+            document.getElementById('tablebody').innerHTML = '';
+            document.getElementById('timeBody').innerHTML = '';
+            var newDate = document.getElementById("choosedate").value;
+            console.log(newDate);
+            if (newDate == '') return;
+            await fetch('/api/appointments/' + newDate).then((value) => {
+                value.json().then((value) => {
+                    if (value.date != document.getElementById("choosedate").value) return;
+                    display(value);
+                })
+            });
+        }
+
+        function cellCreate(name = undefined, tel = undefined, note = undefined) {
+            return `
+                        <span class="delCellBtn" onclick="delCell(0, 0)">x</span>
+                    <div>
+                        name: ${name == undefined ? '' : name}<br>
+                        tel: ${tel == undefined ? '' : tel}<br>
+                        note: ${note == undefined ? '' : note}
+                    </div>`;
+        }
+
+        let count = 0;
+        let offset = -1;
+
+        let rowtime = [];
+        let colworker = [];
+        let colworkerID = [];
+
+        let arrValue, spanValue;
+
+        function display(value) {
+            let current = ++count;
+            console.log("current: " + current);
+
+            const body = document.getElementById('tablebody');
+            const timeBody = document.getElementById('timeBody');
+            body.innerHTML = '';
+            timeBody.innerHTML = '';
+
+            const row = parseInt(value.length);
+            const col = parseInt(value.all.length);
+            numrow = row;
+
+
+            value.all.sort((a, b) => {
+                if (a.worker < b.worker) return -1;
+                if (a.worker > b.worker) return 1;
+                return 0;
+            });
+
+
+
+            if (document.getElementById('tableheader').innerHTML == '') {
+                const maxWidth = 206 * col;
+                console.log(document.getElementById('alltables').style.width);
+                document.getElementById('tableContainer').style.width = 'min(90vw - 100px, ' + maxWidth.toString() + 'px)';
+                document.getElementById('alltables').style.setProperty('width', document.getElementById('tableContainer').clientWidth.toString() + 'px + 110px');
+                document.getElementById('alltables').style.setProperty('left', 'min(50vw - ' + ((document.getElementById('timeContainer').clientWidth + document.getElementById('tableContainer').clientWidth) / 2).toString() + 'px, 100vw)');
+                document.getElementById('alltables').clientLeft = 100;
+                console.log(document.getElementById('alltables').clientLeft);
+                console.log(document.getElementById('alltables').clientWidth);
+                document.getElementById('tableContainer').style.visibility = 'visible';
+                const header = document.getElementById('tableheader');
+                const firstrow = document.createElement("tr");
+                for (var i = 0; i < col; i++) {
+                    const td = document.createElement("th");
+                    console.log(value)
+                    td.innerHTML = value.all[i].worker;
+                    colworker.push(value.all[i].worker);
+                    colworkerID.push(value.all[i].workerID);
+                    firstrow.append(td);
+                }
+                header.append(firstrow);
+
+
+                const timeHeader = document.getElementById('timeHeader');
+                const timerow = document.createElement('tr');
+                const timehead = document.createElement('th');
+                timerow.append(timehead);
+                timeHeader.append(timerow);
+
+                document.getElementById('timeContainer').style.width = '100px';
+                document.getElementById('timeContainer').style.visibility = 'visible';
+
+                for (let i = 0; i < row; i++) {
+                    const when = parseInt(value.start) + i;
+                    rowtime.push(Math.floor(when / 2).toString() + (when % 2 == 1 ? ':30' : ':00'));
+                }
+            }
+
+            let arr = Array.from(Array(row), () => new Array(col));
+            let span = Array.from(Array(row), () => new Array(col));
+
+            console.log(span);
+
+            offset = parseInt(value.offset);
+
+            for (let i = 0; i < col; i++) {
+                for (let apt of value.all[i].appointments) {
+                    let pos = parseInt(apt[0]) - offset;
+                    arr[pos][i] = apt[2];
+                    for (let j = 1; j < parseInt(apt[1]); j++) {
+                        arr[pos + j][i] = -1;
+                    }
+                    span[pos][i] = parseInt(apt[1]);
+                }
+            }
+
+            arrValue = [];
+
+            for (let i = 0; i < row; i++) {
+                let rowValue = [];
+                const tablerow = document.createElement("tr");
+                for (let j = 0; j < col; j++) {
+                    if (arr[i][j] == -1) {
+                        arr[i][j] = new Object();
+                        arr[i][j].name = "";
+                        arr[i][j].tel = "";
+                        arr[i][j].note = "";
+                        rowValue.push(arr[i][j]);
+                        continue;
+                    }
+                    const tmptd = document.createElement("td");
+                    if (arr[i][j] == undefined) {
+                        arr[i][j] = new Object();
+                        arr[i][j].name = "";
+                        arr[i][j].tel = "";
+                        arr[i][j].note = "";
+                    }
+                    rowValue.push(arr[i][j]);
+                    tmptd.innerHTML = cellCreate(arr[i][j].name, arr[i][j].tel, arr[i][j].note);
+                    tmptd.className = "customerCell";
+                    tmptd.setAttribute('onclick', `openmodal(${i}, ${j})`);
+                    if (span[i][j] == undefined) span[i][j] = 1;
+                    tmptd.rowSpan = span[i][j];
+                    tmptd.style.maxHeight = (150 * span[i][j]).toString() + 'px';
+                    console.log(span[i][j]);
+                    tablerow.append(tmptd);
+                }
+                arrValue.push(rowValue);
+                body.append(tablerow);
+                spanValue = span;
+            }
+
+            const tableTime = document.getElementById('tableTime');
+
+            for (let i = 0; i < row; i++) {
+                const timerow = document.createElement('tr');
+                const time = document.createElement("td");
+                const when = parseInt(value.start) + i;
+                time.innerHTML = Math.floor(when / 2).toString() + (when % 2 == 1 ? ':30' : ':00');
+                time.id = 'timecell' + i.toString();
+                time.className = 'timecell';
+                if (i == row - 1) {
+                    time.style.height = "180px";
+                }
+                timerow.append(time);
+                timeBody.append(timerow);
+            }
+        }
+
+        const modal = document.getElementById('modal');
+        const modalcontent = document.getElementById('modalcontent');
+        const modalheader = document.getElementById('modalheader');
+        const modalbody = document.getElementById('modalbody');
+        const modalfooter = document.getElementById('modalfooter');
+
+        let currentModal;
+
+        let lastClick = "";
+
+        function openmodal(x, y) {
+            if (lastClick == 'delCellBtn') return;
+            currentModal = [x, y]
+            console.log(x, y);
+            modalheader.innerHTML = `<span class="close" onclick="closemodal()">&times;</span><div>${rowtime[x] + ' - ' + colworker[y]}</div>`;
+            document.getElementById('ctmname').value = arrValue[x][y].name;
+            document.getElementById('ctmtel').value = arrValue[x][y].tel;
+            document.getElementById('ctmnote').value = arrValue[x][y].note;
+            document.getElementById('ctmlen').value = spanValue[x][y] * 30;
+            console.log(document.getElementById('ctmnote'));
+
+            modal.style.display = 'block';
+        }
+        
+        const delmodal = document.getElementById('delmodal');
+        const delmodalcontent = document.getElementById('delmodalcontent');
+        const delmodalheader = document.getElementById('delmodalheader');
+        const delmodalbody = document.getElementById('delmodalbody');
+        const delmodalfooter = document.getElementById('delmodalfooter');
+
+        let lastdelx = -1, lastdely = -1;
+
+        function delCell(x, y)
+        {
+            lastdelx = x;
+            lastdely = y;
+            currentModal = [x, y]
+            console.log(x, y);
+            delmodalheader.innerHTML = `<span class="close" onclick="closemodal()">&times;</span><div>${rowtime[x] + ' - ' + colworker[y]}</div>`;
+            delmodalbody.innerHTML = 'Are you sure delete this appointment?';
+            delmodal.style.display = 'block';
+        }
+
+        async function deleteCell()
+        {
+            let x = currentModal[0], y = currentModal[1];
+            console.log(x, y);
+            console.log(rowtime[x], colworkerID[y]);
+
+            fetch('/del/appointments', {
+                method: 'POST',
+                headers: {
+                    "start": offset + x,
+                    "worker": colworkerID[y]
+                }
+            });
+
+            await getnewappointments().finally(() => {
+                closemodal();
+            });
+        }
+
+        function closemodal() {
+            modal.style.display = 'none';
+            delmodal.style.display = 'none';
+        }
+
+        window.onmousedown = (event) => {
+            if (event.target.attributes.getNamedItem('class') == null) lastClick = null;
+            else lastClick = event.target.attributes.getNamedItem('class').value;
+            if (event.target == modal || event.target == delmodal) {
+                closemodal();
+            }
+        }
+
+        function eraseEmpty(str)
+        {
+            console.log(str.slice(-1));
+            while (str.slice(-1) == ' ' || str.slice(-1) == '\n') {
+                str = str.slice(0, -1); 
+            }
+            console.log(str);
+            return str;
+        }
+
+        async function updateApt() {
+            let x = currentModal[0], y = currentModal[1];
+            console.log(x, y);
+            console.log(rowtime[x], colworkerID[y]);
+            const name = eraseEmpty(document.getElementById('ctmname').value);
+            const tel = eraseEmpty(document.getElementById('ctmtel').value);
+            const note = eraseEmpty(document.getElementById('ctmnote').value);
+            const len = eraseEmpty(document.getElementById('ctmlen').value);
+
+            let check = true;
+            for (let i = 1; i < len / 30; i++) {
+                if (x + i >= rowtime.length || arrValue[x + i][y].name != "" || arrValue[x + i][y].tel != "" || arrValue[x + i][y].note != "") {
+                    check = false;
+                    break;
+                }
+            }
+            
+            if (!check) {
+                alert('dmm');
+                return;
+            }
+            
+
+            fetch('/new/appointments', {
+                method: 'POST',
+                headers: {
+                    "start": offset + x,
+                    "length": len / 30,
+                    "worker": colworkerID[y],
+                    "name": name,
+                    "tel": tel,
+                    "note": note
+                }
+            });
+
+            await getnewappointments().finally(() => {
+                closemodal();
+            });
+        }
+    </script>
 </body>
+
 </html>

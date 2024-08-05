@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+
+        header {
+            height: 15vh;
+            background-color: white;
+            position: sticky;
+            top: 0%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            z-index: 1;
+        }
+
+        body {
+            top: 15vh;
+            background-color: white;
+            overflow: auto;
+            overflow-x: auto;
+            /* Hide scrollbars */
+        }
+
+        table,
+        td {
+            color: #000;
+            font: sans-serif
+        }
+
+        div.tableContainer {
+            visibility: hidden;
+            clear: both;
+            border: 1px solid #963;
+            margin: auto;
+            height: 70vh;
+            overflow: auto;
+            overflow-x: auto;
+            /* width: 100%; */
+        }
+
+        html>body div.tableContainer {
+            overflow-x: auto;
+        }
+
+        div.tableContainer table {
+            margin: auto;
+            overflow-x:auto;
+        }
+
+        /* html>body div.tableContainer table {
+            width: 100%;
+        } */
+
+        thead.fixedHeader,
+        th {
+            position: sticky;
+            top: 0px;
+            z-index: 3;
+        }
+
+        html>body thead.fixedHeader tr {
+            display: block;
+            z-index: 3;
+        }
+
+        thead.fixedHeader th {
+            background: #C96;
+            border-left: 1px solid #EB8;
+            border-right: 1px solid #B74;
+            border-top: 1px solid #EB8;
+            font-weight: normal;
+            text-align: left;
+            z-index: 3;
+        }
+
+        html>body tbody.scrollContent {
+            display: block;
+            height: 100%;
+            overflow-x: auto;
+            overflow: auto;
+        }
+
+        html>body thead.fixedHeader th:first-child {
+            overflow-x: auto;
+            overflow: auto;
+            width: 100px;
+            min-width: 100px;
+            height: 40px;
+            z-index: 3;
+        }
+
+        html>body thead.fixedHeader th:not(:first-child) {
+            overflow-x: auto;
+            overflow: auto;
+            width: 200px;
+            min-width: 200px;
+            height: 40px;
+            text-align: center;
+            z-index: 3;
+        }
+
+        html>body tbody.scrollContent td:first-child {
+            border-left: 1px solid #EB8;
+            border-right: 1px solid #B74;
+            border-top: 1px solid #EB8;
+            overflow-x: auto;
+            overflow: auto;
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            text-align: center;
+            background-color: white;
+            z-index: 2;
+        }
+
+        html>body tbody.scrollContent td:not(:first-child) {
+            border-left: 1px solid #EB8;
+            border-right: 1px solid #B74;
+            border-top: 1px solid #EB8;
+            overflow-x: auto;
+            overflow: auto;
+            width: 200px;
+            height: 100px;
+            min-width: 200px;
+            z-index: 1;
+        }
+        
+        td.timecell {
+            font-size: xx-large;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <button id="prevdate">←</button>
+        <input type="date" id="choosedate" onchange="getnewappointments()">
+        <button type="button" id="nextdate">→</button>
+    </header>
+    <div id="tableContainer" class="tableContainer">
+        <table id="table" cellpadding="0" cellspacing="0" class="scrollTable">
+            <thead id="tableheader" class="fixedHeader"></thead>
+            <tbody id="tablebody" class="scrollContent"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const table = document.getElementById('tableContainer');
+        function stickTime(cell)
+        {
+            cell.style.left = table.scrollLeft;
+            console.log(cell);
+        }
+
+        document.getElementById("prevdate").addEventListener("click", async () => {
+            var currentDate = document.getElementById('choosedate').value;
+            var newDate = new Date(currentDate);
+            newDate.setDate(newDate.getDate() - 1);
+            document.getElementById('choosedate').value = newDate.toISOString().toString().substring(0, 10);
+            await getnewappointments();
+        });
+
+        if (document.getElementById("choosedate").value == "") {
+            document.getElementById("choosedate").valueAsDate = new Date();
+            getnewappointments();
+        }
+
+        document.getElementById("nextdate").addEventListener("click", async () => {
+            var currentDate = document.getElementById('choosedate').value;
+            var newDate = new Date(currentDate);
+            newDate.setDate(newDate.getDate() + 1);
+            document.getElementById('choosedate').value = newDate.toISOString().toString().substring(0, 10);
+            await getnewappointments();
+        });
+
+        async function getnewappointments() {
+            document.getElementById('tablebody').innerHTML = '';
+            var newDate = document.getElementById("choosedate").value;
+            console.log(newDate);
+            if (newDate == '') return;
+            await fetch('/api/appointments/' + newDate).then((value) => {
+                value.json().then((value) => {
+                    if (value.date != document.getElementById("choosedate").value) return;
+                    display(value);
+                })
+            });
+        }
+
+        function cellCreate(name = undefined, tel = undefined, note = undefined) {
+            return `<div>name: ${name == undefined ? '' : name}
+                    </div><div>tel: ${tel == undefined ? '' : tel}</div>
+                    <div>note: ${note == undefined ? '' : note}</div>`;
+        }
+
+        let count = 0;
+
+
+        function display(value) {
+            let current = ++count;
+            console.log("current: " + current);
+
+            const body = document.getElementById('tablebody');
+            body.innerHTML = '';
+
+            const row = parseInt(value.length);
+            const col = parseInt(value.all.length);
+            numrow = row;
+
+
+            value.all.sort((a, b) => {
+                if (a.worker < b.worker) return -1;
+                if (a.worker > b.worker) return 1;
+                return 0;
+            });
+
+            if (document.getElementById('tableheader').innerHTML == '') {
+                const maxWidth = 100 + 200 * col;
+                document.getElementById('tableContainer').style.width = 'min(80vw, ' + maxWidth.toString() + 'px';
+                document.getElementById('tableContainer').style.visibility = 'visible';
+                const header = document.getElementById('tableheader');
+                const firstrow = document.createElement("tr");
+                const tmptd = document.createElement("th");
+                firstrow.append(tmptd);
+                for (var i = 0; i < col; i++) {
+                    const td = document.createElement("th");
+                    td.innerHTML = value.all[i].worker;
+                    firstrow.append(td);
+                }
+                header.append(firstrow);
+            }
+
+            let arr = Array.from(Array(row), () => new Array(col));
+            let span = Array.from(Array(row), () => new Array(col));
+
+            console.log(span);
+
+            const offset = parseInt(value.offset);
+
+            for (let i = 0; i < col; i++) {
+                for (let apt of value.all[i].appointments) {
+                    let pos = parseInt(apt[0]) - offset;
+                    arr[pos][i] = cellCreate(apt[2].name, apt[2].tel, apt[2].note);
+                    for (let j = 1; j < parseInt(apt[1]); j++) {
+                        arr[pos + j][i] = -1;
+                    }
+                    span[pos][i] = parseInt(apt[1]);
+                }
+            }
+            console.log(span);
+            for (let i = 0; i < row; i++) {
+                const tablerow = document.createElement("tr");
+                const time = document.createElement("td");
+                const when = parseInt(value.start) + i;
+                time.innerHTML = Math.floor(when / 2).toString() + (when % 2 == 1 ? ':30' : ':00');
+                time.id = 'timecell' + i.toString();
+                time.className = 'timecell';
+                tablerow.append(time);
+                for (let j = 0; j < col; j++) {
+                    if (arr[i][j] == -1) continue;
+                    const tmptd = document.createElement("td");
+                    if (arr[i][j] == undefined) {
+                        arr[i][j] = cellCreate();
+                    }
+                    tmptd.innerHTML = arr[i][j];
+                    if (span[i][j] == undefined) span[i][j] = 1;
+                    tmptd.rowSpan = span[i][j];
+                    tablerow.append(tmptd);
+                }
+                body.append(tablerow);
+            }
+            console.log(table.innerHTML);
+        }
+    </script>
+</body>
+
+</html>

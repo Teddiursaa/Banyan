@@ -28,23 +28,19 @@ import data from './data.json' assert { type: 'json'};
 
 for (var appointment of data.appointments) {
     const ownerID = appointment.ownerID;
+    const workerID = appointment.worker;
     const startTime = Date.parse(appointment.start) / 1800000;
     const endTime = Date.parse(appointment.end) / 1800000;
     
-    const workersList = Workers.listEntities();
-    for await (var worker of workersList) {
-        console.log(worker.rowKey + " " + worker.name + " " + ownerID + " " + appointment.worker);
-        if (worker.rowKey == ownerID && worker.name == appointment.worker) {
-            const Entity = {
-                partitionKey: worker.partitionKey,
-                rowKey: startTime.toString(),
-                ownerID: ownerID,
-                active: true,
-                deactivationDate: undefined,
-                length: endTime - startTime
-            };
-            Appointments.createEntity(Entity);
-            break;
-        }
-    } 
+    const Entity = {
+        partitionKey: workerID,
+        rowKey: startTime.toString(),
+        start: startTime.toString(),
+        ownerID: ownerID,
+        active: true,
+        customer: JSON.stringify({"name": appointment.customer.name, "tel": appointment.customer.tel, "note": appointment.customer.note}),
+        deactivationDate: undefined,
+        length: endTime - startTime
+    };
+    Appointments.createEntity(Entity);
 }

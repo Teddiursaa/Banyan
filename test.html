@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Click the button to create a TABLE, a TR and a TD element.</p>
+
+    <button onclick="myFunction()">Try it</button>
+
+    <script>
+        var x = document.createElement("TABLE");
+        x.setAttribute("id", "myTable");
+        document.body.appendChild(x);
+
+        for (var i = 0; i < 10; i++) {
+            var y = document.createElement("TR");
+            y.setAttribute("id", `myTr ${i}`);
+            document.getElementById('myTable').appendChild(y);
+            for (var j = 0; j < 10; j++) {
+                var z = document.createElement("TD");
+                var t = document.createTextNode(`cell ${i} ${j}`);
+                z.appendChild(t);
+                console.log(document.getElementById(`myTr ${i}`));
+                document.getElementById(`myTr ${i}`).appendChild(z);    
+            }
+        }
+            
+        function myFunction() {
+            var cur = document.getElementById("myTable").rows[0].innerHTML;
+            var pos = cur.indexOf('<td>', 1);
+            console.log(cur);
+            console.log(pos);
+            document.getElementById("myTable").rows[0].innerHTML = cur.slice(0, pos + 3) + ' rowspan=\"2\"' + cur.slice(pos + 3);
+        }
+    </script>
+
+</body>
+
+</html>
