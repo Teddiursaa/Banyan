@@ -1,39 +1,8 @@
 {
     "users": [
         {
-            "username": "aaaaa",
-            "password": "aaaaa"
-        },
-        {
-            "username": "bbbbb",
-            "password": "bbbbb"
-        }
-    ],
-    "workers": [
-        {
-            "name": "11111",
-            "owner": "aaaaa"
-        },
-        {
-            "name": "22222",
-            "owner": "aaaaa"
-        },
-        {
-            "name": "33333",
-            "owner": "aaaaa"
-        }
-    ],
-    "appointments": [
-        {
-            "ownerID": "37deedd1-6c7b-4895-9930-6e9aea58169e",
-            "worker": "bf79cd94-f005-47ac-acd9-5002d2169975",
-            "customer": {
-                    "name": "AAAAA",
-                    "tel": "1A1A1A",
-                    "note": "asdf as asdga ga 4gaw4g a44g a gasd asga na advacvasdfa s4a s a aw 4a a af asd asg asg asdasda w4 a4 a"
-            },
-            "start": "05 Jun 2024 12:30:00 UTC+7",
-            "end": "05 Jun 2024 13:00:00 UTC+7"
+            "username": "cccccccc",
+            "password": "cccccccc"
         }
     ]
 }

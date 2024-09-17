@@ -1,110 +1,51 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+html {
+    font-family: monospace, monospace, monospace;
+    font-style: normal;
 }
 
-html {
-    background: #95a5a6;
-    font-family: 'Helvetica Neue', Arial, Sans-Serif;
+header {
+    height: 15vh;
+    background-color: #606676;
+    position: sticky;
+    top: 0%;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
 
-    .login-wrap {
-        position: relative;
-        margin: 0 auto;
-        background: #ecf0f1;
-        width: 350px;
-        border-radius: 5px;
-        box-shadow: 3px 3px 10px #333;
-        padding: 15px;
+body {
+    top: 15vh;
+    background-color: #FEF3E2;
+    overflow: auto;
+    overflow-x: auto;
+    /* Hide scrollbars */
+}
 
-        h2 {
-            text-align: center;
-            font-weight: 200;
-            font-size: 2em;
-            margin-top: 10px;
-            color: #34495e;
-        }
+.userlogo {
+    display: flex;
+    position: absolute;
+    top: calc(7.5vh - 35px);
+    right: 20px;
+}
 
-        .form {
-            padding-top: 20px;
+.userlogo:hover {
+    cursor: pointer;
+}
 
-            input[type="text"],
-            input[type="password"],
-            button {
-                width: 80%;
-                margin-left: 10%;
-                margin-bottom: 25px;
-                height: 40px;
-                border-radius: 5px;
-                outline: 0;
-                -moz-outline-style: none;
-            }
+.redirectlist {
+    position: absolute;
+    top: calc(7.5vh + 35px);
+    right: 10px;
+    background-color: #BEC6A0;
+    width: 110px;
+    height: 130px;
+    font-size: 20px;
+    line-height: 30px;
+    border: 5px solid #708871;
+}
 
-            input[type="text"],
-            input[type="password"] {
-                border: 1px solid #bbb;
-                padding: 0 0 0 10px;
-                font-size: 14px;
-
-                &:focus {
-                    border: 1px solid #3498db;
-                }
-            }
-
-            a {
-                text-align: center;
-                font-size: 10px;
-                color: #3498db;
-
-                p {
-                    padding-bottom: 10px;
-                }
-
-            }
-
-            button {
-                background: #e74c3c;
-                border: none;
-                color: white;
-                font-size: 18px;
-                font-weight: 200;
-                cursor: pointer;
-                transition: box-shadow .4s ease;
-
-                &:hover {
-                    box-shadow: 1px 1px 5px #555;
-                }
-
-                &:active {
-                    box-shadow: 1px 1px 7px #222;
-                }
-
-            }
-
-        }
-
-        &:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: -webkit-linear-gradient(left,
-                    #27ae60 0%, #27ae60 20%,
-                    #8e44ad 20%, #8e44ad 40%,
-                    #3498db 40%, #3498db 60%,
-                    #e74c3c 60%, #e74c3c 80%,
-                    #f1c40f 80%, #f1c40f 100%);
-            background: -moz-linear-gradient(left,
-                    #27ae60 0%, #27ae60 20%,
-                    #8e44ad 20%, #8e44ad 40%,
-                    #3498db 40%, #3498db 60%,
-                    #e74c3c 60%, #e74c3c 80%,
-                    #f1c40f 80%, #f1c40f 100%);
-            height: 5px;
-            border-radius: 5px 5px 0 0;
-        }
-
-    }
-
+.redirectlist a {
+    display: block;
+    position: absolute;
+    left: 10px;
 }

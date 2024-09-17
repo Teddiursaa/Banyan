@@ -1,21 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/workers.css">
     <title>Workers</title>
 </head>
-<body>
-    <h1>Workers List:</h1>
 
-    <table id="workertable"></table>
+<body>
+    <header>
+        <div class="headline">
+            <span class="headlinetext">Workers</span>
+        </div>
+        <div class="userlogo">
+            <img src="./style/userlogo.png" title="userlogo" style="height: 70px;" id="userlogo">
+        </div>
+        <div class="redirectlist" id="redirectlist" style="display: none;">
+            <a href="/">Mainpage</a>
+            <br>
+            <a href="/workers">Workers</a>
+            <br>
+            <a href="/settings">Settings</a>
+            <br>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+    <div class="workerContainer">
+        <table class="table" id="workerTable">
+            <thead class="tableheader" id="workerHeader"></thead>
+            <tbody class="tablebody" id="workerBody"></tbody>
+        </table>
+    </div>
+
+    <div id="modal" class="modal">
+        <div id="modalcontent" class="modal-content">
+            <div id="modalheader" class="modal-header">
+                <span class="modaltitle" id="modaltitle"></span>
+                <span class="close" onclick="closemodal()">&times;</span>
+            </div>
+            <div id="modalbody" class="modal-body">
+
+            </div>
+            <div id="modalfooter" class="modal-footer" style="min-height: 25px;">
+                <span onclick="closemodal()" class="updateBtnNo"
+                    style="float: right; display: block; max-height: 20;">No</span>
+                <span onclick="returnyes()" class="updateBtnYes"
+                    style="float: right; display: block; max-height: 20;">Yes</span>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const workerList = fetch('/api/workers').then((value) => {
-            value.json().then((value) => {
-                console.log(value);
+        const table = document.getElementById('workerTable');
+        const header = document.getElementById('workerHeader');
+        const body = document.getElementById('workerBody');
+
+        if (header.innerHTML == '') getworker();
+
+        let workerList;
+
+        async function getworker() {
+            await fetch('/api/workers').then((value) => {
+                value.json().then((value) => {
+                    console.log(value);
+                    display(value.workers);
+                });
             });
-        });
-        
+        }
+
+        function display(workers) {
+            if (header.innerHTML == '') {
+                const firstrow = document.createElement("tr");
+                const th1 = document.createElement("th");
+                firstrow.append(th1);
+                const th2 = document.createElement("th");
+                th2.innerHTML = 'Name';
+                firstrow.append(th2);
+                const th3 = document.createElement("th");
+                th3.innerHTML = '';
+                firstrow.append(th3);
+                header.append(firstrow);
+            }
+            body.innerHTML = '';
+
+            workerList = workers;
+            console.log(workers);
+
+            for (let i = 0; i < workers.length; i++) {
+                const worker = workers[i];
+                const row = document.createElement("tr");
+                const td1 = document.createElement("td");
+                td1.innerHTML = (i + 1).toString();
+                row.append(td1);
+                const td2 = document.createElement("td");
+                td2.innerHTML = worker.name;
+                row.append(td2);
+                const td3 = document.createElement("td");
+                td3.innerHTML = 'Remove';
+                td3.setAttribute('onclick', 'removeworker(' + i.toString() + ')');
+                row.append(td3);
+                body.append(row);
+            }
+            const addrow = document.createElement("tr");
+            const td1 = document.createElement("td");
+            td1.innerHTML = '';
+            addrow.append(td1);
+            const td2 = document.createElement("td");
+            const newworkername = document.createElement("div");
+            newworkername.setAttribute('contenteditable', 'true');
+            newworkername.setAttribute('class', 'newworkername');
+            newworkername.setAttribute('id', 'newworkername');
+            newworkername.setAttribute('placeholder', 'Enter new worker\'s name here!');
+            td2.append(newworkername);
+            addrow.append(td2);
+            const td3 = document.createElement("td");
+            td3.innerHTML = 'Add';
+            td3.setAttribute('onclick', 'addworker()');
+            addrow.append(td3);
+            body.append(addrow);
+            closemodal();
+        }
+
+        const modal = document.getElementById('modal');
+        const modalcontent = document.getElementById('modalcontent');
+        const modalheader = document.getElementById('modalheader');
+        const modaltitle = document.getElementById('modaltitle');
+        const modalbody = document.getElementById('modalbody');
+        const modalfooter = document.getElementById('modalfooter');
+
+        let curmethod;
+        let currentworker;
+
+        function removeworker(i) {
+            worker = workerList[i];
+            modaltitle.innerHTML = "Remove worker " + worker.name;
+            modalbody.innerHTML = "Are you sure you want to remove worker " + worker.name + "?";
+            curmethod = "remove";
+            currentworker = worker.workerID;
+            openmodal();
+        }
+
+        function addworker() {
+            const newworker = document.getElementById('newworkername').innerHTML;
+            modaltitle.innerHTML = "Add worker " + newworker;
+            modalbody.innerHTML = "Are you sure you want to add worker " + newworker + "?";
+            curmethod = "add";
+            currentworker = newworker;
+            openmodal();
+        }
+
+        function openmodal() {
+            modal.style.display = "block";
+        }
+
+        function closemodal() {
+            modal.style.display = "none";
+        }
+
+        async function doneprocess() {
+            getworker().then((value) => {
+                closemodal();
+            });
+        }
+
+        async function returnyes() {
+            if (curmethod == "add") {
+                fetch('/new/workers', {
+                    method: 'POST',
+                    headers: {
+                        "worker": currentworker
+                    }
+                }).finally(() => {
+                    getworker().finally(() => {
+                        closemodal();
+                    });
+                });
+            }
+            else {
+                fetch('/del/workers', {
+                    method: 'POST',
+                    headers: {
+                        "workerID": currentworker
+                    }
+                }).finally(() => {
+                    getworker().finally(() => {
+                        closemodal();
+                    });
+                });
+            }
+        }
+
+        const userlogo = document.getElementById('userlogo');
+        const redirectlist = document.getElementById('redirectlist');
+        let redirectlistopen = false;
+
+        function userlogoclick() {
+            if (redirectlistopen == true) {
+                redirectlist.style.display = 'none';
+                redirectlistopen = false;
+            }
+            else {
+                redirectlist.style.display = 'block';
+                redirectlistopen = true;
+            }
+        }
+
+        window.onmousedown = (event) => {
+            if (event.target == modal) {
+                closemodal();
+            }
+            if (event.target == userlogo) {
+                userlogoclick();
+            }
+        }
     </script>
 </body>
+
 </html>

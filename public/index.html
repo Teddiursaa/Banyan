@@ -1,329 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="style/style.css">
+<link rel="stylesheet" href="style/index.css">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        html {
-            font-family: sans-serif;
-        }
-
-        header {
-            height: 15vh;
-            background-color: white;
-            position: sticky;
-            top: 0%;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-
-        body {
-            top: 15vh;
-            background-color: white;
-            overflow: auto;
-            overflow-x: auto;
-            /* Hide scrollbars */
-        }
-
-        html>body div.alltables {
-            visibility: visible;
-            display: block;
-            float: left;
-            left: none;
-            margin: auto;
-            position: absolute;
-        }
-
-        table,
-        td {
-            color: #000;
-            font: sans-serif
-        }
-
-        div.tableContainer {
-            visibility: hidden;
-            clear: both;
-            border: 1px solid #963;
-            margin: auto;
-            height: 70vh;
-            overflow: auto;
-            overflow-x: auto;
-            display: inline-block;
-            border-spacing: 0px;
-        }
-
-        div.timeContainer {
-            visibility: hidden;
-            clear: both;
-            border: 1px solid #963;
-            margin: auto;
-            height: 70vh;
-            overflow: hidden;
-            display: inline-block;
-            border-spacing: 0px;
-            width: 100px;
-        }
-
-        html>body div.tableContainer {
-            overflow-x: auto;
-            margin: auto;
-        }
-
-        html>body div.timeContainer {
-            overflow: hidden;
-            width: 100px;
-            margin: auto;
-        }
-
-        html>body div.timeContainer table.tableTime {
-            margin-left: 0px;
-            overflow: hidden;
-            display: block;
-            width: 100px;
-        }
-
-        html>body div.tableContainer table.scrollTable {
-            top: 0px;
-            overflow-x: auto;
-        }
-
-        html>body div.timeContainer table.tableTime {
-            overflow: hidden;
-            width: 100px;
-        }
-
-        thead.fixedHeader,
-        th {
-            position: sticky;
-            top: 0px;
-            z-index: 3;
-        }
-
-        html>body thead.fixedHeader tr {
-            display: block;
-            z-index: 3;
-        }
-
-        thead.fixedHeader th {
-            background: #C96;
-            border-left: 1px solid #EB8;
-            border-right: 1px solid #B74;
-            border-top: 1px solid #EB8;
-            font-weight: normal;
-            text-align: left;
-            z-index: 3;
-        }
-
-        html>body tbody.scrollContent {
-            display: block;
-            height: 100%;
-            overflow: auto;
-        }
-
-        html>body thead.fixedHeader th {
-            overflow-x: auto;
-            overflow: auto;
-            width: 200px;
-            min-width: 200px;
-            height: 40px;
-            text-align: center;
-            z-index: 3;
-        }
-
-        html>body div.tableContainer tbody.scrollContent td {
-            position: inherit;
-            border-left: 1px solid #EB8;
-            border-right: 1px solid #B74;
-            border-top: 1px solid #EB8;
-            overflow-x: auto;
-            overflow: auto;
-            width: 200px;
-            min-width: 200px;
-            z-index: 1;
-            overflow-wrap: break-word;
-            overflow: auto;
-            max-height: 150px;
-        }
-
-        html>body div.timeContainer tbody.scrollContent td {
-            border-left: 1px solid #EB8;
-            border-right: 1px solid #B74;
-            border-top: 1px solid #EB8;
-            overflow-x: auto;
-            overflow: auto;
-            width: 100px;
-            min-width: 100px;
-            z-index: 1;
-            overflow-wrap: break-word;
-            overflow: auto;
-            max-height: 150px;
-        }
-
-        td.timecell {
-            font-size: xx-large;
-            height: 150px;
-            max-height: 150px;
-            width: 100px;
-            text-align: center;
-        }
-
-        td.customerCell {
-            position: inherit;
-            height: 150px;
-            max-width: 100px;
-            overflow-wrap: break-word;
-            overflow: auto;
-            max-height: 150px;
-        }
-
-        /* The Modal (background) */
-        .modal {
-            z-index: 10;
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            margin: 0%;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            top: 0px;
-            left: 0px;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
-        }
-
-        /* Modal Content */
-        .modal-content {
-            z-index: 10;
-            position: relative;
-            background-color: #fefefe;
-            margin: auto;
-            margin-top: 20vh;
-            border: 1px solid #888;
-            width: min(80vw, 500px);
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-animation-name: animatetop;
-            -webkit-animation-duration: 0.4s;
-            animation-name: animatetop;
-            animation-duration: 0.4s
-        }
-
-        /* Add Animation */
-        @-webkit-keyframes animatetop {
-            from {
-                top: -300px;
-                opacity: 0
-            }
-
-            to {
-                top: 0;
-                opacity: 1
-            }
-        }
-
-        @keyframes animatetop {
-            from {
-                top: -300px;
-                opacity: 0
-            }
-
-            to {
-                top: 0;
-                opacity: 1
-            }
-        }
-
-        .delCellBtn {
-            z-index: 8;
-            position: block;
-            color: rgb(212, 22, 22);
-            right: 30px;
-            left: 100px;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .delCellBtn:hover,
-        .delCellBtn:focus {
-            color: #7e0505;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .updateBtn {
-            color: white;
-            float: right;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .updateBtn:hover,
-        .updateBtn:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* The Close Button */
-        .close {
-            color: white;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal-header {
-            font-size: 30px;
-            height: 50px;
-            text-align: center;
-            z-index: 10;
-            padding: 2px 16px;
-            background-color: #5cb85c;
-            color: white;
-        }
-
-        .modal-body {
-            z-index: 10;
-            padding: 2px 16px;
-        }
-
-        .modal-footer {
-            z-index: 10;
-            padding: 2px 16px;
-            background-color: #5cb85c;
-            color: white;
-        }
-
-        .boxsizingBorder {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-    </style>
+    <title>Mainpage</title>
 </head>
 
 <body>
     <header>
-        <button type="button" id="prevdate">←</button>
-        <label for="choosedate"></label>
-        <input type="date" id="choosedate" name="choosedate" onchange="getnewappointments()">
-        <button type="button" id="nextdate">→</button>
+        <div class="datepicker">
+            <button type="button" id="prevdate" class="datebutton">←</button>
+            <input type="date" id="choosedate" class="choosedate " name="choosedate" onchange="getnewappointments()">
+            <button type="button" id="nextdate" class="datebutton">→</button>
+        </div>
+        <div class="userlogo">
+            <img src="./style/userlogo.png" title="userlogo" style="height: 70px;" id="userlogo">
+        </div>
+        <div class="redirectlist" id="redirectlist" style="display: none;">
+            <a href="/">Mainpage</a>
+            <br>
+            <a href="/workers">Workers</a>
+            <br>
+            <a href="/settings">Settings</a>
+            <br>
+            <a href="/logout">Logout</a>
+        </div>
     </header>
+    <div id="addworker" class="addworker">
+        It seems that you don't have any worker. Click <a href="/workers">here</a> to add new worker!
+    </div>
     <div id="alltables" class="alltables">
         <div id="timeContainer" class="timeContainer">
             <table id="tableTime" cellpadding="0" cellspacing="0" class="scrollTable">
@@ -345,17 +53,12 @@
                 <span class="close" onclick="closemodal()">&times;</span>
             </div>
             <div id="modalbody" class="modal-body">
-                <br>
                 <label for="ctmname">Name: </label>
-                <input id="ctmname" type="text" name="ctmname" value="">
-                <br><br>
+                <input id="ctmname" type="text" name="ctmname" value=""><br>
                 <label for="ctmtel">Tel:</label>
-                <input id="ctmtel" type="text" name="ctmtel" value="">
-                <br><br>
-                <label for="ctmnote">Note: </label>
-                <br>
-                <textarea id="ctmnote" name="ctmnote" rows="5" cols="30"></textarea>
-                <br><br>
+                <input id="ctmtel" type="text" name="ctmtel" value=""><br>
+                <label for="ctmnote">Note: </label><br>
+                <textarea id="ctmnote" name="ctmnote" rows="5" cols="30"></textarea><br>
                 <label for="ctmlen">Length: </label>
                 <select id="ctmlen" name="ctmlen">
                     <option value="30">30 minutes</option>
@@ -364,9 +67,12 @@
                     <option value="120">120 minutes</option>
                 </select>
             </div>
+            <div id="cantupdate" class="cantupdate">The next slot is already occupied!</div>
             <div id="modalfooter" class="modal-footer" style="min-height: 25px;">
-                <span id="updateApt" onclick="updateApt()" class="updateBtn"
-                    style="float: right; display: block; max-height: 20;">Update</button>
+                <span id="updateApt" onclick="updateApt()" class="updateBtnNo"
+                    style="float: right; display: block; max-height: 20;">Cancel</span>
+                <span id="updateApt" onclick="updateApt()" class="updateBtnYes"
+                    style="float: right; display: block; max-height: 20;">Update</span>
             </div>
         </div>
     </div>
@@ -377,13 +83,13 @@
                 <span class="close" onclick="closemodal()">&times;</span>
             </div>
             <div id="delmodalbody" class="modal-body">
-                
+
             </div>
             <div id="delmodalfooter" class="modal-footer" style="min-height: 25px;">
-                <span id="updateApt" onclick="deleteCell()" class="updateBtn"
-                    style="float: right; display: block; max-height: 20;">Yes</span>
-                <span id="updateApt" onclick="closemodal()" class="updateBtn"
+                <span id="updateApt" onclick="closemodal()" class="updateBtnNo"
                     style="float: right; display: block; max-height: 20;">No</span>
+                <span id="updateApt" onclick="deleteCell()" class="updateBtnYes"
+                    style="float: right; display: block; max-height: 20;">Yes</span>
             </div>
         </div>
     </div>
@@ -392,12 +98,10 @@
         const table = document.getElementById('tableContainer');
         const timeContainer = document.getElementById('timeContainer');
 
+        let curscroll = 0;
+
         function scrolltoo() {
             timeContainer.scrollTop = table.scrollTop;
-        }
-
-        function scrolltoo2() {
-            table.scrollTop = timeContainer.scrollTop;
         }
 
         document.getElementById("prevdate").addEventListener("click", async () => {
@@ -423,6 +127,9 @@
         });
 
         async function getnewappointments() {
+            curscroll = table.scrollTop;
+            var currentDate = document.getElementById('choosedate').value;
+            console.log(currentDate);
             document.getElementById('tablebody').innerHTML = '';
             document.getElementById('timeBody').innerHTML = '';
             var newDate = document.getElementById("choosedate").value;
@@ -430,15 +137,22 @@
             if (newDate == '') return;
             await fetch('/api/appointments/' + newDate).then((value) => {
                 value.json().then((value) => {
+                    if (value.all.length == 0) {
+                        const addworker = document.getElementById('addworker');
+                        addworker.style.display = 'block';
+                        return;
+                    }
                     if (value.date != document.getElementById("choosedate").value) return;
                     display(value);
                 })
             });
         }
 
-        function cellCreate(name = undefined, tel = undefined, note = undefined) {
+        function cellCreate(name = undefined, tel = undefined, note = undefined, i = -1, j = -1) {
             return `
-                        <span class="delCellBtn" onclick="delCell(0, 0)">x</span>
+                    <div class="delCellDiv">
+                        <span class="delCellBtn" onclick="delCell(${i}, ${j})">x</span>
+                    </div>
                     <div>
                         name: ${name == undefined ? '' : name}<br>
                         tel: ${tel == undefined ? '' : tel}<br>
@@ -456,6 +170,7 @@
         let arrValue, spanValue;
 
         function display(value) {
+            console.log('curscroll: ', curscroll);
             let current = ++count;
             console.log("current: " + current);
 
@@ -478,7 +193,7 @@
 
 
             if (document.getElementById('tableheader').innerHTML == '') {
-                const maxWidth = 206 * col;
+                const maxWidth = 204 * col + 2;
                 console.log(document.getElementById('alltables').style.width);
                 document.getElementById('tableContainer').style.width = 'min(90vw - 100px, ' + maxWidth.toString() + 'px)';
                 document.getElementById('alltables').style.setProperty('width', document.getElementById('tableContainer').clientWidth.toString() + 'px + 110px');
@@ -534,6 +249,7 @@
             }
 
             arrValue = [];
+            console.log('curscroll: ', curscroll);
 
             for (let i = 0; i < row; i++) {
                 let rowValue = [];
@@ -555,7 +271,7 @@
                         arr[i][j].note = "";
                     }
                     rowValue.push(arr[i][j]);
-                    tmptd.innerHTML = cellCreate(arr[i][j].name, arr[i][j].tel, arr[i][j].note);
+                    tmptd.innerHTML = cellCreate(arr[i][j].name, arr[i][j].tel, arr[i][j].note, i, j);
                     tmptd.className = "customerCell";
                     tmptd.setAttribute('onclick', `openmodal(${i}, ${j})`);
                     if (span[i][j] == undefined) span[i][j] = 1;
@@ -568,6 +284,8 @@
                 body.append(tablerow);
                 spanValue = span;
             }
+
+            console.log('curscroll: ', curscroll);
 
             const tableTime = document.getElementById('tableTime');
 
@@ -584,6 +302,10 @@
                 timerow.append(time);
                 timeBody.append(timerow);
             }
+
+            table.scrollTop = curscroll;
+            timeContainer.scrollTop = curscroll;
+
         }
 
         const modal = document.getElementById('modal');
@@ -609,7 +331,7 @@
 
             modal.style.display = 'block';
         }
-        
+
         const delmodal = document.getElementById('delmodal');
         const delmodalcontent = document.getElementById('delmodalcontent');
         const delmodalheader = document.getElementById('delmodalheader');
@@ -618,8 +340,7 @@
 
         let lastdelx = -1, lastdely = -1;
 
-        function delCell(x, y)
-        {
+        function delCell(x, y) {
             lastdelx = x;
             lastdely = y;
             currentModal = [x, y]
@@ -629,8 +350,7 @@
             delmodal.style.display = 'block';
         }
 
-        async function deleteCell()
-        {
+        async function deleteCell() {
             let x = currentModal[0], y = currentModal[1];
             console.log(x, y);
             console.log(rowtime[x], colworkerID[y]);
@@ -649,8 +369,25 @@
         }
 
         function closemodal() {
+            cantupdate.style.display = 'none';
             modal.style.display = 'none';
             delmodal.style.display = 'none';
+        }
+
+        const userlogo = document.getElementById('userlogo');
+        const redirectlist = document.getElementById('redirectlist');
+        let redirectlistopen = false;
+
+        function userlogoclick()
+        {
+            if (redirectlistopen == true) {
+                redirectlist.style.display = 'none';
+                redirectlistopen = false;
+            }
+            else {
+                redirectlist.style.display = 'block';
+                redirectlistopen = true;
+            }
         }
 
         window.onmousedown = (event) => {
@@ -659,19 +396,24 @@
             if (event.target == modal || event.target == delmodal) {
                 closemodal();
             }
+            if (event.target == userlogo) {
+                userlogoclick();
+            }
         }
 
-        function eraseEmpty(str)
-        {
+        function eraseEmpty(str) {
             console.log(str.slice(-1));
             while (str.slice(-1) == ' ' || str.slice(-1) == '\n') {
-                str = str.slice(0, -1); 
+                str = str.slice(0, -1);
             }
             console.log(str);
             return str;
         }
 
+        const cantupdate = document.getElementById('cantupdate');
+
         async function updateApt() {
+            cantupdate.style.display = 'none';
             let x = currentModal[0], y = currentModal[1];
             console.log(x, y);
             console.log(rowtime[x], colworkerID[y]);
@@ -682,17 +424,17 @@
 
             let check = true;
             for (let i = 1; i < len / 30; i++) {
-                if (x + i >= rowtime.length || arrValue[x + i][y].name != "" || arrValue[x + i][y].tel != "" || arrValue[x + i][y].note != "") {
+                if (x + i >= rowtime.length || arrValue[x + i][y].name != "" || arrValue[x + i][y].tel != "" || arrValue[x + i][y].note != "" || spanValue[x + i][y] > 1) {
                     check = false;
                     break;
                 }
             }
-            
+
             if (!check) {
-                alert('dmm');
+                cantupdate.style.display = 'block';
                 return;
             }
-            
+
 
             fetch('/new/appointments', {
                 method: 'POST',

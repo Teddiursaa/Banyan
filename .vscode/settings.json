@@ -5,5 +5,7 @@
         "*.out": "plaintext",
         "*.py": "python",
         "tuple": "cpp"
-    }
+    },
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/e3ec1466-1c3c-443e-b421-955f0ab5f14f/resourceGroups/ducanh/providers/Microsoft.Web/sites/banyan",
+    "appService.deploySubpath": "."
 }

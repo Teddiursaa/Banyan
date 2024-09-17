@@ -1,0 +1,406 @@
+html>body div.alltables {
+    display: flex;
+    flex-direction: row;
+    visibility: visible;
+    float: left;
+    left: none;
+    margin: auto;
+    position: absolute;
+}
+
+table,
+td {
+    color: #000;
+    font: sans-serif
+}
+
+div.tableContainer {
+    visibility: hidden;
+    clear: both;
+    border: 1px solid #3e553e;
+    margin: auto;
+    height: 70vh;
+    overflow: auto;
+    overflow-x: auto;
+    display: inline-block;
+    border-spacing: 0px;
+}
+
+div.timeContainer {
+    visibility: hidden;
+    clear: both;
+    border: 1px solid #3e553e;
+    margin: auto;
+    height: 70vh;
+    overflow: hidden;
+    display: inline-block;
+    border-spacing: 0px;
+    width: 100px;
+}
+
+html>body div.tableContainer {
+    overflow-x: auto;
+    margin: auto;
+}
+
+html>body div.timeContainer {
+    overflow: hidden;
+    width: 100px;
+    margin: auto;
+}
+
+html>body div.timeContainer table.tableTime {
+    margin-left: 0px;
+    overflow: hidden;
+    display: block;
+    width: 100px;
+}
+
+html>body div.tableContainer table.scrollTable {
+    top: 0px;
+    overflow-x: auto;
+}
+
+html>body div.timeContainer table.tableTime {
+    overflow: hidden;
+    width: 100px;
+}
+
+thead.fixedHeader,
+th {
+    background-color: #708871;
+    position: sticky;
+    top: 0px;
+    z-index: 3;
+}
+
+html>body thead.fixedHeader tr {
+    background-color: #708871;
+    display: block;
+    z-index: 3;
+}
+
+thead.fixedHeader th {
+    background-color: #3e553e;
+    background: #3e553e;
+    border-left: 1px solid #3e553e;
+    border-right: 1px solid #3e553e;
+    border-top: 1px solid #3e553e;
+    border-bottom: 1px solid #3e553e;
+    font-weight: normal;
+    text-align: left;
+    z-index: 3;
+}
+
+html>body tbody.scrollContent {
+    display: block;
+    height: 100%;
+    overflow: auto;
+}
+
+html>body thead.fixedHeader th {
+    background-color: #708871;
+    overflow-x: auto;
+    overflow: auto;
+    width: 200px;
+    min-width: 200px;
+    height: 40px;
+    text-align: center;
+    z-index: 3;
+}
+
+html>body div.tableContainer tbody.scrollContent td {
+    position: inherit;
+    border-left: 1px solid #3e553e;
+    border-right: 1px solid #3e553e;
+    border-top: 1px solid #3e553e;
+    border-bottom: 1px solid #3e553e;
+    width: 200px;
+    min-width: 200px;
+    z-index: 1;
+    overflow-wrap: break-word;
+    overflow: auto;
+    vertical-align: top;
+}
+
+html>body div.timeContainer tbody.scrollContent td {
+    border-left: 1px solid #3e553e;
+    border-right: 1px solid #3e553e;
+    border-top: 1px solid #3e553e;
+    border-bottom: 1px solid #3e553e;
+    overflow-x: auto;
+    overflow: auto;
+    width: 100px;
+    min-width: 100px;
+    z-index: 1;
+    overflow-wrap: break-word;
+    overflow: auto;
+    max-height: 150px;
+}
+
+td.timecell {
+    font-size: xx-large;
+    height: 150px;
+    max-height: 150px;
+    width: 100px;
+    text-align: center;
+}
+
+td.customerCell:hover,
+td.customerCell:focus {
+    background-color: #BEC6A0;
+    cursor: pointer;
+}
+
+td.customerCell {
+    position: inherit;
+    height: 150px;
+    max-width: 100px;
+    overflow-wrap: break-word;
+    overflow: auto;
+    max-height: 150px;
+}
+
+/* The Modal (background) */
+.modal {
+    z-index: 10;
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    margin: 0%;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    z-index: 10;
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    margin-top: 20vh;
+    border: 1px solid #888;
+    width: min(80vw, 500px);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    font-size: 30px;
+    height: 50px;
+    text-align: center;
+    z-index: 10;
+    padding: 2px 16px;
+    background-color: #708871;
+    color: black;
+}
+
+input {
+    height: 25px;
+    background-color: #FEF3E2;
+    border-radius: 10px;
+    font-size: 20px;
+    border: 2px solid #606676;
+    font: inherit;
+}
+
+select {
+    height: 31px;
+    background-color: #FEF3E2;
+    border-radius: 10px;
+    font-size: 20px;
+    border: 2px solid #606676;
+    font: inherit;
+}
+
+textarea {
+    resize: none;
+    border: 2px solid #606676;
+    height: 75px;
+    background-color: #FEF3E2;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.modal-body {
+    z-index: 10;
+    padding: 2px 16px;
+    height: 250px;
+    font-size: 25px;
+    line-height: 35px;
+}
+
+.updateBtnYes,
+.updateBtnNo {
+    color: black;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.updateBtnNo:hover,
+.updateBtnNo:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.updateBtnYes:hover,
+.updateBtnYes:focus {
+    color: green;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-footer {
+    z-index: 10;
+    padding: 2px 16px;
+    background-color: #708871;
+    color: black;
+}
+
+.boxsizingBorder {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.delCellDiv {
+    display: inline-block;
+    width: 100%;
+}
+
+.delCellBtn {
+    position: relative;
+    color: rgb(212, 22, 22);
+    float: right;
+    right: 8px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.delCellBtn:hover,
+.delCellBtn:focus {
+    color: #7e0505;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.datepicker {
+    width: 350px;
+    top: calc(7.5vh - 30px);
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: flex;
+}
+
+[type="date"] {
+    background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
+}
+
+[type="date"]::-webkit-inner-spin-button {
+    display: none;
+}
+
+[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+.choosedate {
+    width: 250px;
+    min-width: 250px;
+    height: 50px;
+    background-color: #FEF3E2;
+    border-radius: 10px;
+    align-items: center;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.choosedate:hover,
+.choosedate:focus {
+    background-color: #BEC6A0;
+    cursor: pointer;
+}
+
+.datebutton {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    background-color: #FEF3E2;
+}
+
+.datebutton:hover,
+.datebutton:focus {
+    background-color: #BEC6A0;
+    cursor: pointer;
+}
+
+.addworker {
+    font-size: xx-large;
+    background-color: #BEC6A0;
+    width: min(100vw, 600px);
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+}
+
+.cantupdate {
+    background-color: #da4f4f;
+    display: none;
+    font-size: xx-large;
+}

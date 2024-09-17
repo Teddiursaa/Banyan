@@ -4,23 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/login.css">
     <title>Login</title>
 </head>
 
-<body> 
-    <div class="login-wrap">
-        <form action="login" method="post" id="login">
+<body>
+    <header>
+        <div class="headline">
+            <span class="headlinetext">Login</span>
+        </div>
+    </header>
+    <div class="inputtable">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Username"><br><br>
+        <input type="text" id="username" name="username" placeholder="Username">
+        <br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Password">
-        <div></div>
-        <button type="submit" form="login"> Submit </button>
-        </form>
-        <a href="/register">
-            <p> Don't have an account? Register </p>
-        </a>
+        <br>
+        <div class="alertdiv" id="alertdiv"></div>
+        <button onclick="submit()"> Submit </button>
     </div>
+    <script>
+        const username = document.getElementById('username');
+        const password = document.getElementById('password');
+
+        const allowChar = "~`! @#$%^&*()_-+={[}]|\\:;\"'<,>.?/";
+
+        function checkpassword(password) {
+            if (password.length < 8) return false;
+            for (let i in password) {
+                if (!('a' <= i && i <= 'z' || 'A' <= i && i <= 'Z' || '0' <= i && i <= '9' || i in allowChar)) return false;
+            }
+            return true;
+        }
+
+        const alertdiv = document.getElementById('alertdiv');
+
+        async function submit() {
+            alertdiv.style.display = 'none';
+            alertdiv.style.backgroundColor = '#da4f4f';
+            if (checkpassword(password.value) == false) {
+                alertdiv.innerHTML = 'Passwords are at least 8 letters and can only contain characters \'1\' -> \'9\' and \'a\' -> \'z\'!';
+                alertdiv.style.display = 'block';
+                return;
+            }
+            console.log(username.value);
+            console.log(password.value);
+            await fetch('/sendlogin', {
+                method: "GET",
+                headers: {
+                    "username": username.value,
+                    "password": password.value
+                }
+            }).then((value) => {
+                value.json().then((value) => {
+                    if (!value.good) {
+                        alertdiv.innerHTML = 'Wrong username or password!';
+                        alertdiv.style.display = 'block';
+                    }
+                    else {
+                        alertdiv.style.backgroundColor = '#708871';
+                        alertdiv.innerHTML = 'Login successfully!';
+                        alertdiv.style.display = 'block';
+                        window.location.href = '/';
+                    }
+                });
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/settings.css">
+    <script src="https://unpkg.com/check-password-strength/dist/umd.js"></script>
+    <title>Settings</title>
+</head>
+
+<body>
+    <header>
+        <div class="headline">
+            <span class="headlinetext">Settings</span>
+        </div>
+        <div class="userlogo">
+            <img src="./style/userlogo.png" title="userlogo" style="height: 70px;" id="userlogo">
+        </div>
+        <div class="redirectlist" id="redirectlist" style="display: none;">
+            <a href="/">Mainpage</a>
+            <br>
+            <a href="/workers">Workers</a>
+            <br>
+            <a href="/settings">Settings</a>
+            <br>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+    <div class="inputtable">
+        <label for="username">Username: </label>
+        <input id="username" placeholder="Username">
+        <br>
+        <label for="oldpassword">Old password: </label>
+        <input id="oldpassword" type="password" placeholder="Old password">
+        <br>
+        <label for="newpassword">New password: </label>
+        <input id="newpassword" placeholder="New password" type="password">
+        <br>
+        <label for="renewpassword">Retype: </label>
+        <input id="renewpassword" placeholder="Type new password again" type="password">
+        <br>
+        <label for="startTime">Start time: </label>
+        <select id="startTime" name="startTime"></select>
+        <br>
+        <label for="endTime">End time: </label>
+        <select id="endTime" name="endTime"></select>
+        <br>
+        <div class="alertdiv" id="alertdiv"></div>
+        <button id="submitbutton" onclick="submit()">Submit</button>
+    </div>
+
+    <script>
+        const username = document.getElementById('username');
+        const newpassword = document.getElementById('newpassword');
+        const renewpassword = document.getElementById('renewpassword');
+        const startTime = document.getElementById('startTime');
+        const endTime = document.getElementById('endTime');
+        const oldpassword = document.getElementById('oldpassword');
+        const submitbutton = document.getElementById('submitbutton');
+
+        let firstTime = true;
+
+        if (firstTime == true) {
+            firstTime = false;
+            console.log('mim');
+            for (let i = 0; i < 48; i++) {
+                const option = document.createElement('option');
+                option.setAttribute("value", i.toString());
+                option.innerHTML = (Math.floor(i / 2)).toString() + (i % 2 == 0 ? ":00" : ":30");
+                startTime.append(option);
+            }
+
+            for (let i = 0; i < 48; i++) {
+                const option = document.createElement('option');
+                option.setAttribute("value", i.toString());
+                option.innerHTML = (Math.floor(i / 2)).toString() + (i % 2 == 0 ? ":00" : ":30");
+                endTime.append(option);
+            }
+
+            var data;
+            fetch('/api/settings').then((value) => {
+                value.json().then((value) => {
+                    data = value;
+                    console.log(data);
+                    username.value = data.username;
+                    startTime.value = data.startTime;
+                    endTime.value = data.endTime;
+                });
+            });
+        }
+
+        const allowChar = "~`! @#$%^&*()_-+={[}]|\\:;\"'<,>.?/";
+
+        function checkpassword(password) {
+            if (password.length < 8) return false;
+            for (let i in password) {
+                if (!('a' <= i && i <= 'z' || 'A' <= i && i <= 'Z' || '0' <= i && i <= '9' || i in allowChar)) return false;
+            }
+            return true;
+        }
+
+        const alertdiv = document.getElementById('alertdiv');
+
+        async function submit() {
+            alertdiv.style.display = 'none';
+            alertdiv.style.backgroundColor = '#da4f4f';
+            if (newpassword.value != renewpassword.value) {
+                alertdiv.innerHTML = 'Two new passwords are not the same!';
+                alertdiv.style.display = 'block';
+                return;
+            }
+            if ((newpassword.value != "" && checkpassword(newpassword.value) == false)
+                || checkpassword(oldpassword.value) == false) {
+                alertdiv.innerHTML = 'Passwords are at least 8 letters and can only contain characters \'1\' -> \'9\' and \'a\' -> \'z\'!';
+                alertdiv.style.display = 'block';
+                return;
+            }
+            console.log(startTime.value);
+            console.log(endTime.value);
+            console.log(parseInt(startTime.value), parseInt(endTime.value))
+            if (parseInt(startTime.value) > parseInt(endTime.value)) {
+                alertdiv.innerHTML = 'Start time must be before end time!';
+                alertdiv.style.display = 'block';
+                return;
+            }
+            let good;
+            await fetch('change/settings', {
+                method: "GET",
+                headers: {
+                    "username": username.value,
+                    "newpassword": newpassword.value,
+                    "startTime": startTime.value,
+                    "endTime": endTime.value,
+                    "oldpassword": oldpassword.value
+                }
+            }).then((value) => {
+                value.json().then((value) => {
+                    if (value.good) {
+                        alertdiv.style.backgroundColor = '#708871';
+                        alertdiv.innerHTML = 'Change successfully!';
+                        alertdiv.style.display = 'block';
+                    }
+                    else {
+                        alertdiv.innerHTML = 'Wrong username or password!';
+                        alertdiv.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        const userlogo = document.getElementById('userlogo');
+        const redirectlist = document.getElementById('redirectlist');
+        let redirectlistopen = false;
+
+        function userlogoclick() {
+            if (redirectlistopen == true) {
+                redirectlist.style.display = 'none';
+                redirectlistopen = false;
+            }
+            else {
+                redirectlist.style.display = 'block';
+                redirectlistopen = true;
+            }
+        }
+
+        window.onmousedown = (event) => {
+            if (event.target == userlogo) {
+                userlogoclick();
+            }
+        }
+    </script>
+</body>
+
+</html>
